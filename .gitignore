@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+models/
+__MACOSX/
+*.pkl
+*.out
+*.log
+*.egg-info/
+.DS_Store
