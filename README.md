@@ -13,7 +13,9 @@ Contemporary machine learning reconstruction/identification methods involved [Re
 - Events activate only a sparse subset of sensors, in addition to many dead sensors
 - Mapping the detector onto a rectangular grid introduces artifacts and additional complexities (filters, layers, etc.) that's prone to overfitting
 A graph neural network addresses these issues by modeling events in the detector as densely connected graphs, with nodes consisting of only sensors activated during the event, and edges representing pairwise distance between sensors calculated using a learned Gaussian kernel function.
+
 ## Architecture
+
 ---
 Input (per event):
   └─ Variable-size point cloud of active DOMs
@@ -43,6 +45,13 @@ Design choices:
 - **Feature vector**: Consists of 7 total features per sensor, concatenated in order: sensor coordinates $(x,y,z)$, sum of charge in the first pulse recorded by the sensor, sum of charge in all pulses within the sensor, time at which first pulse crosses activation threshold, and string index.
 	- While spatial coordinates already capture DOM position, string number allows the network to learn sub-detector identity, particularly the distinction between standard IceCube strings (17m DOM spacing) and DeepCore strings (7m spacing, deeper placement, higher sensitivity). This feature was also included for futureproofing and to enable generalization to detector configurations with different sensor types and string configurations, such as the planned IceCube-Gen2 expansion.
 ---
+
+## Results
+The GNN achieved ~10% improvement in classification precision over the existing CNN baseline, and CUDA restructuring with HPC load balancing reduced training time by ~47%.
+
+Detailed evaluation outputs (ROC curves, confusion matrices, training logs) were generated on IceCube's internal computing infrastructure using proprietary collaboration simulation data. The model checkpoints and evaluation artifacts from the original training campaigns are not available for this repository.
+---
+
 ## Project Structure
 
 ```
@@ -164,6 +173,6 @@ Outputs are saved to `models/<experiment_name>/<run>/`, including:
 - Training statistics CSV
 - Test set predictions and scores
 
-## License
+## Disclaimer
 
-This project was developed as part of doctoral research at Michigan State University in collaboration with the IceCube Neutrino Observatory.
+This project was developed as part of doctoral research at Michigan State University in collaboration with the IceCube Neutrino Observatory. Training data is proprietary to the IceCube Collaboration and is not included in this repository. The code is provided for reference and demonstration purposes.
